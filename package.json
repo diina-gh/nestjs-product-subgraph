@@ -34,6 +34,7 @@
     "apollo-server-core": "^3.10.3",
     "apollo-server-express": "^3.10.3",
     "class-validator": "^0.13.2",
+    "dotenv": "^16.0.3",
     "graphql": "^16.6.0",
     "mysql2": "^2.3.3",
     "reflect-metadata": "^0.1.13",

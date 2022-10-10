@@ -5,8 +5,6 @@ import { DATABASE_HOST, DATABASE_NAME, DATABASE_PASSWORD, DATABASE_PORT, DATABAS
 import { GraphQLModule } from '@nestjs/graphql';
 import {ApolloFederationDriver, ApolloFederationDriverConfig,} from '@nestjs/apollo';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { join } from 'path';
 import { MenuModule } from './menus/menu.module';
 
@@ -33,7 +31,7 @@ import { MenuModule } from './menus/menu.module';
     }),
     MenuModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
