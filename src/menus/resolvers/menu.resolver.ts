@@ -1,7 +1,7 @@
 import { Resolver, Mutation, Query, Args, InputType, Int, Info, ResolveReference } from '@nestjs/graphql';
 import { InjectRepository } from '@nestjs/typeorm';
-import { InputError } from 'src/_bases/entities/input_error.entity';
-import { ServerError } from 'src/_bases/entities/server_error.entity';
+import { InputError } from 'src/_bases/entities/input-error.entity';
+import { ServerError } from 'src/_bases/entities/server-error.entity';
 import { Repository } from 'typeorm';
 import { MenuArgs } from '../dto/menu.args';
 import { MenuInput } from '../dto/menu.input';

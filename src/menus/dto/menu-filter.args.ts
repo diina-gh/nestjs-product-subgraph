@@ -1,5 +1,5 @@
 import { ArgsType, Field, InputType, Int, ObjectType } from '@nestjs/graphql';
-import { BaseFilterArgs } from 'src/_bases/dto/base_filter.args';
+import { BaseFilterArgs } from 'src/_bases/dto/base-filter.args';
 
 @InputType()
 export class MenuFilterArgs extends BaseFilterArgs {}
