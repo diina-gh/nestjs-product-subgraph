@@ -26,7 +26,7 @@ export class MenuResolver {
     public async getOne(@Args('id') id: number): Promise<typeof MenuResult> {
         try {
             const menu = await this.menuService.findOne(id);
-            if (!menu) return new InputError("Cet utilisateur n'éxiste pas.") 
+            if (!menu) return new InputError("Ce menu n'éxiste pas.") 
             return menu
         } catch (error) {
             return new ServerError("Une erreur est survenue.", error) 
@@ -51,7 +51,7 @@ export class MenuResolver {
             if(menuInput.id){
                 const updated = await this.menuService.update(menuInput.id, menuInput)
                 if(updated) return await this.menuService.findOne(menuInput.id)
-                else return new InputError("Cette utilisateur n'éxiste pas.")
+                else return new InputError("Ce menu n'éxiste pas.")
             } 
     
             let entity = this.menuRepository.create(menuInput);
@@ -67,7 +67,7 @@ export class MenuResolver {
         try {
             const item = await this.menuService.findOne(id)
             if(item) await this.menuService.delete(id)
-            else return new InputError("Cette utilisateur n'éxiste pas.")
+            else return new InputError("Ce menu n'éxiste pas.")
             return item
         } 
         catch (e) {

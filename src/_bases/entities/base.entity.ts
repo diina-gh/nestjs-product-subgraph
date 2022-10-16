@@ -9,14 +9,6 @@ export abstract class BaseModel extends BaseEntity {
     id: number;
 
     @Field()
-    @Column({ length: 200, nullable:true })
-    name: string;
-
-    @Field()
-    @Column({ length: 1000, nullable: true })
-    desc: string;
-
-    @Field()
     @Column({ name:'activated' ,type: 'boolean', default: true })
     activated: boolean;
 

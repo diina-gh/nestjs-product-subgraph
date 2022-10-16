@@ -7,6 +7,8 @@ import {ApolloFederationDriver, ApolloFederationDriverConfig,} from '@nestjs/apo
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { join } from 'path';
 import { MenuModule } from './menus/menu.module';
+import { CategoryModule } from './categories/category.module';
+import { InventoryModule } from './inventories/inventory.module';
 
 @Module({
   imports: [
@@ -30,6 +32,8 @@ import { MenuModule } from './menus/menu.module';
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
     MenuModule,
+    CategoryModule,
+    InventoryModule,
   ],
   controllers: [],
   providers: [],

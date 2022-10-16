@@ -22,14 +22,14 @@ directive @inaccessible on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUM
 
 directive @override(from: String!) on FIELD_DEFINITION
 
-type Menu {
+type Category {
   id: ID!
-  name: String!
-  desc: String!
   activated: Boolean!
   createdAt: DateTime!
   updatedAt: DateTime!
-  detail: String!
+  name: String!
+  desc: String!
+  menus: [Menu!]!
 }
 
 """
@@ -37,9 +37,37 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Inventory {
+  id: ID!
+  activated: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  quantity: Float!
+  menuId: Float!
+  menu: Menu!
+}
+
+type Menu {
+  id: ID!
+  activated: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  desc: String!
+  detail: String!
+  categoryId: Float!
+  category: Category!
+  inventoryId: Float!
+  inventory: Inventory!
+}
+
 type Query {
   menu(id: Float!): MenuResult!
   menus(menuArgs: MenuArgs!): PaginatedMenuResult!
+  category(id: Float!): CategoryResult!
+  categories(categoryArgs: CategoryArgs!): PaginatedCategoryResult!
+  inventory(id: Float!): InventoryResult!
+  inventories(inventoryArgs: InventoryArgs!): PaginatedInventoryResult!
 }
 
 union MenuResult = Menu | InputError | ServerError
@@ -95,17 +123,98 @@ enum Sort {
   DESC
 }
 
+union CategoryResult = Category | InputError | ServerError
+
+union PaginatedCategoryResult = PaginatedCategory | InputError | ServerError
+
+type PaginatedCategory {
+  count: Int!
+  hasNext: Boolean!
+  categories: [Category!]!
+}
+
+input CategoryArgs {
+  page: Int = 1
+  take: Int = 10
+  filter: CategoryFilterArgs
+  orderBy: CategoryOrderArgs
+}
+
+input CategoryFilterArgs {
+  id: Float
+  activated: Boolean
+  search: SearchrArgs
+}
+
+input CategoryOrderArgs {
+  id: Sort
+  name: Sort
+  desc: Sort
+  createdAt: Sort
+  updatedAt: Sort
+}
+
+union InventoryResult = Inventory | InputError | ServerError
+
+union PaginatedInventoryResult = PaginatedInventory | InputError | ServerError
+
+type PaginatedInventory {
+  count: Int!
+  hasNext: Boolean!
+  inventories: [Inventory!]!
+}
+
+input InventoryArgs {
+  page: Int = 1
+  take: Int = 10
+  filter: InventoryFilterArgs
+  orderBy: InventoryOrderArgs
+}
+
+input InventoryFilterArgs {
+  id: Float
+  activated: Boolean
+  search: SearchrArgs
+}
+
+input InventoryOrderArgs {
+  id: Sort
+  name: Sort
+  desc: Sort
+  createdAt: Sort
+  updatedAt: Sort
+}
+
 type Mutation {
   saveMenu(menuInput: MenuInput!): MenuResult!
   deleteMenu(id: Int!): MenuResult!
+  saveCategory(categoryInput: CategoryInput!): CategoryResult!
+  deleteCategory(id: Int!): CategoryResult!
+  saveInventory(inventoryInput: InventoryInput!): InventoryResult!
+  deleteInventory(id: Int!): InventoryResult!
 }
 
 input MenuInput {
   id: Float
-  name: String
-  desc: String
   activated: Boolean!
-  detail: String!
+  name: String!
+  desc: String!
+  detail: String
+  categoryId: Float!
+}
+
+input CategoryInput {
+  id: Float
+  activated: Boolean!
+  name: String!
+  desc: String!
+}
+
+input InventoryInput {
+  id: Float
+  activated: Boolean!
+  quantity: Float!
+  menuId: Float!
 }
 
 scalar link__Import
