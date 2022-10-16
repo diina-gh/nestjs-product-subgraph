@@ -10,6 +10,10 @@ import { MenuModule } from './menus/menu.module';
 import { CategoryModule } from './categories/category.module';
 import { InventoryModule } from './inventories/inventory.module';
 import { DiscountModule } from './discounts/discount.module';
+import { CartModule } from './carts/cart.module';
+import { CartItemModule } from './cart-items/cart-item.module';
+import { OrderModule } from './orders/order.module';
+import { OrderItemModule } from './order-items/order-item.module';
 
 @Module({
   imports: [
@@ -36,6 +40,10 @@ import { DiscountModule } from './discounts/discount.module';
     CategoryModule,
     InventoryModule,
     DiscountModule,
+    CartModule,
+    CartItemModule,
+    OrderModule,
+    OrderItemModule,
   ],
   controllers: [],
   providers: [],

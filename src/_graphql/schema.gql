@@ -22,6 +22,42 @@ directive @inaccessible on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUM
 
 directive @override(from: String!) on FIELD_DEFINITION
 
+type User {
+  id: ID!
+  cart: Cart!
+}
+
+type Cart {
+  id: ID!
+  activated: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  subTotal: Float!
+  total: Float!
+  userId: Int!
+  user: User!
+  cartItems: [CartItem!]!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type CartItem {
+  id: ID!
+  activated: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  price: Float!
+  discount: Float!
+  quantity: Float!
+  menuId: Float!
+  menu: Menu!
+  cartId: Float!
+  cart: Cart!
+}
+
 type Category {
   id: ID!
   activated: Boolean!
@@ -31,11 +67,6 @@ type Category {
   desc: String!
   menus: [Menu!]!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type Discount {
   id: ID!
@@ -58,6 +89,47 @@ type Inventory {
   menu: Menu!
 }
 
+type District {
+  id: ID!
+  orders: [Order!]!
+}
+
+type Order {
+  id: ID!
+  activated: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  firstname: String!
+  lastname: String!
+  email: String!
+  phone: String!
+  line1: String!
+  line2: String
+  districtId: Int!
+  district: District!
+  subTotal: Float!
+  tax: Float!
+  shipping: Float!
+  total: Float!
+  userId: Int
+  user: User
+  orderItems: [OrderItem!]!
+}
+
+type OrderItem {
+  id: ID!
+  activated: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  price: Float!
+  discount: Float!
+  quantity: Float!
+  menuId: Float!
+  menu: Menu!
+  orderId: Float!
+  order: Order!
+}
+
 type Menu {
   id: ID!
   activated: Boolean!
@@ -72,6 +144,8 @@ type Menu {
   inventory: Inventory!
   discountId: Float!
   discount: Discount!
+  cartItems: [CartItem!]!
+  orderItems: [OrderItem!]!
 }
 
 type Query {
@@ -83,6 +157,12 @@ type Query {
   inventories(inventoryArgs: InventoryArgs!): PaginatedInventoryResult!
   discount(id: Float!): DiscountResult!
   discounts(discountArgs: DiscountArgs!): PaginatedDiscountResult!
+  cart(id: Float!): CartResult!
+  carts(cartArgs: CartArgs!): PaginatedCartResult!
+  cartItem(id: Float!): OrderItemResult!
+  cartItems(cartItemArgs: OrderItemArgs!): PaginatedOrderItemResult!
+  order(id: Float!): OrderResult!
+  orders(orderArgs: OrderArgs!): PaginatedOrderResult!
 }
 
 union MenuResult = Menu | InputError | ServerError
@@ -231,6 +311,99 @@ input DiscountOrderArgs {
   updatedAt: Sort
 }
 
+union CartResult = Cart | InputError | ServerError
+
+union PaginatedCartResult = PaginatedCart | InputError | ServerError
+
+type PaginatedCart {
+  count: Int!
+  hasNext: Boolean!
+  carts: [Cart!]!
+}
+
+input CartArgs {
+  page: Int = 1
+  take: Int = 10
+  filter: CartFilterArgs
+  orderBy: CartOrderArgs
+}
+
+input CartFilterArgs {
+  id: Float
+  activated: Boolean
+  search: SearchrArgs
+}
+
+input CartOrderArgs {
+  id: Sort
+  name: Sort
+  desc: Sort
+  createdAt: Sort
+  updatedAt: Sort
+}
+
+union OrderItemResult = OrderItem | InputError | ServerError
+
+union PaginatedOrderItemResult = PaginatedOrderItem | InputError | ServerError
+
+type PaginatedOrderItem {
+  count: Int!
+  hasNext: Boolean!
+  orderItems: [OrderItem!]!
+}
+
+input OrderItemArgs {
+  page: Int = 1
+  take: Int = 10
+  filter: OrderItemFilterArgs
+  orderBy: OrderItemOrderArgs
+}
+
+input OrderItemFilterArgs {
+  id: Float
+  activated: Boolean
+  search: SearchrArgs
+}
+
+input OrderItemOrderArgs {
+  id: Sort
+  name: Sort
+  desc: Sort
+  createdAt: Sort
+  updatedAt: Sort
+}
+
+union OrderResult = Order | InputError | ServerError
+
+union PaginatedOrderResult = PaginatedOrder | InputError | ServerError
+
+type PaginatedOrder {
+  count: Int!
+  hasNext: Boolean!
+  orders: [Order!]!
+}
+
+input OrderArgs {
+  page: Int = 1
+  take: Int = 10
+  filter: OrderFilterArgs
+  orderBy: OrderOrderArgs
+}
+
+input OrderFilterArgs {
+  id: Float
+  activated: Boolean
+  search: SearchrArgs
+}
+
+input OrderOrderArgs {
+  id: Sort
+  name: Sort
+  desc: Sort
+  createdAt: Sort
+  updatedAt: Sort
+}
+
 type Mutation {
   saveMenu(menuInput: MenuInput!): MenuResult!
   deleteMenu(id: Int!): MenuResult!
@@ -240,6 +413,14 @@ type Mutation {
   deleteInventory(id: Int!): InventoryResult!
   saveDiscount(discountInput: DiscountInput!): DiscountResult!
   deleteDiscount(id: Int!): DiscountResult!
+  saveCart(cartInput: CartInput!): CartResult!
+  deleteCart(id: Int!): CartResult!
+  saveCartItem(cartItemInput: CartItemInput!): CartItemResult!
+  deleteCartItem(id: Int!): CartItemResult!
+  saveOrder(orderInput: OrderInput!): OrderResult!
+  deleteOrder(id: Int!): OrderResult!
+  saveOrderItem(cartItemInput: OrderItemInput!): OrderItemResult!
+  deleteOrderItem(id: Int!): OrderItemResult!
 }
 
 input MenuInput {
@@ -273,6 +454,47 @@ input DiscountInput {
   name: String!
   desc: String!
   percent: Float!
+}
+
+input CartInput {
+  id: Float
+  activated: Boolean!
+  userId: Float!
+}
+
+union CartItemResult = CartItem | InputError | ServerError
+
+input CartItemInput {
+  id: Float
+  activated: Boolean!
+  menuId: Float!
+  cartId: Float!
+  quantity: Float!
+  price: Float!
+  discount: Float
+}
+
+input OrderInput {
+  id: Float
+  activated: Boolean!
+  firstname: String
+  lastname: String
+  email: String
+  phone: String
+  line1: String
+  line2: String
+  districtId: Float
+  userId: Float
+}
+
+input OrderItemInput {
+  id: Float
+  activated: Boolean!
+  menuId: Float!
+  orderId: Float!
+  quantity: Float!
+  price: Float!
+  discount: Float
 }
 
 scalar link__Import

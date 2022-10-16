@@ -1,12 +1,14 @@
 import { createUnionType, Directive, Field, ID, ObjectType } from '@nestjs/graphql';
+import { CartItem } from 'src/cart-items/entities/cart-item.entity';
 import { Category } from 'src/categories/entities/category.entity';
 import { Discount } from 'src/discounts/entities/discount.entity';
 import { Inventory } from 'src/inventories/entities/inventory.entity';
+import { OrderItem } from 'src/order-items/entities/order-item.entity';
 import { BaseModel } from 'src/_bases/entities/base.entity';
 import { InputError } from 'src/_bases/entities/input-error.entity';
 import { PaginatedBase } from 'src/_bases/entities/paginated-base.entity';
 import { ServerError } from 'src/_bases/entities/server-error.entity';
-import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType('Menu')
 @Directive('@key(fields: "id")')
@@ -53,6 +55,14 @@ export class Menu extends BaseModel {
   @Field((type) => Discount)
   @ManyToOne(() => Discount, (discount) => discount.menus)
   discount: Discount;
+
+  @Field((type) => [CartItem])
+  @OneToMany(() => CartItem, (cartItems) => cartItems.menu)
+  cartItems: CartItem[];
+
+  @Field((type) => [OrderItem])
+  @OneToMany(() => OrderItem, (orderItems) => orderItems.menu)
+  orderItems: OrderItem[];
 
 
 }
