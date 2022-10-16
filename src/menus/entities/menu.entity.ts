@@ -1,5 +1,6 @@
 import { createUnionType, Directive, Field, ID, ObjectType } from '@nestjs/graphql';
 import { Category } from 'src/categories/entities/category.entity';
+import { Discount } from 'src/discounts/entities/discount.entity';
 import { Inventory } from 'src/inventories/entities/inventory.entity';
 import { BaseModel } from 'src/_bases/entities/base.entity';
 import { InputError } from 'src/_bases/entities/input-error.entity';
@@ -43,6 +44,16 @@ export class Menu extends BaseModel {
   @Field((type) => Inventory)
   @OneToOne(() => Inventory, (inventory) => inventory.menu)
   inventory: Inventory;
+
+
+  @Field()
+  @Column({ nullable:false })
+  discountId: number;
+
+  @Field((type) => Discount)
+  @ManyToOne(() => Discount, (discount) => discount.menus)
+  discount: Discount;
+
 
 }
 

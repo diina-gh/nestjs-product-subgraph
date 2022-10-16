@@ -9,6 +9,7 @@ import { join } from 'path';
 import { MenuModule } from './menus/menu.module';
 import { CategoryModule } from './categories/category.module';
 import { InventoryModule } from './inventories/inventory.module';
+import { DiscountModule } from './discounts/discount.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { InventoryModule } from './inventories/inventory.module';
     MenuModule,
     CategoryModule,
     InventoryModule,
+    DiscountModule,
   ],
   controllers: [],
   providers: [],
