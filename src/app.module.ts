@@ -14,6 +14,10 @@ import { CartModule } from './carts/cart.module';
 import { CartItemModule } from './cart-items/cart-item.module';
 import { OrderModule } from './orders/order.module';
 import { OrderItemModule } from './order-items/order-item.module';
+import { VariantModule } from './variants/variant.module';
+import { OptionModule } from './options/option.module';
+import { MenuVariantModule } from './menus-variants/menu-variant.module';
+import { MenuOptionModule } from './menus-options/menu-option.module';
 
 @Module({
   imports: [
@@ -44,6 +48,10 @@ import { OrderItemModule } from './order-items/order-item.module';
     CartItemModule,
     OrderModule,
     OrderItemModule,
+    VariantModule,
+    OptionModule,
+    MenuVariantModule,
+    MenuOptionModule,
   ],
   controllers: [],
   providers: [],

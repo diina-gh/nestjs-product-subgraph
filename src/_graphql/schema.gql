@@ -89,6 +89,51 @@ type Inventory {
   menu: Menu!
 }
 
+type MenuVariant {
+  id: ID!
+  activated: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  menuId: Float!
+  menu: Menu!
+  variantId: Float!
+  variant: Variant!
+}
+
+type Variant {
+  id: ID!
+  activated: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  desc: String!
+  options: [Option!]!
+  menusVariants: [MenuVariant!]!
+}
+
+type Option {
+  id: ID!
+  activated: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  desc: String!
+  variantId: Float!
+  variant: Variant!
+  menusOptions: [MenuOption!]!
+}
+
+type MenuOption {
+  id: ID!
+  activated: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  menuId: Float!
+  menu: Menu!
+  optionId: Float!
+  option: Option!
+}
+
 type District {
   id: ID!
   orders: [Order!]!
@@ -146,6 +191,8 @@ type Menu {
   discount: Discount!
   cartItems: [CartItem!]!
   orderItems: [OrderItem!]!
+  menusVariants: [MenuVariant!]!
+  menusOptions: [MenuOption!]!
 }
 
 type Query {
@@ -163,6 +210,14 @@ type Query {
   cartItems(cartItemArgs: OrderItemArgs!): PaginatedOrderItemResult!
   order(id: Float!): OrderResult!
   orders(orderArgs: OrderArgs!): PaginatedOrderResult!
+  variant(id: Float!): VariantResult!
+  variants(variantArgs: VariantArgs!): PaginatedVariantResult!
+  option(id: Float!): OptionResult!
+  options(optionArgs: OptionArgs!): PaginatedOptionResult!
+  menuVariant(id: Float!): MenuVariantResult!
+  menuVariants(menuVariantArgs: MenuVariantArgs!): PaginatedMenuVariantResult!
+  menuOption(id: Float!): MenuOptionResult!
+  menuOptions(menuOptionArgs: MenuOptionArgs!): PaginatedMenuOptionResult!
 }
 
 union MenuResult = Menu | InputError | ServerError
@@ -404,6 +459,130 @@ input OrderOrderArgs {
   updatedAt: Sort
 }
 
+union VariantResult = Variant | InputError | ServerError
+
+union PaginatedVariantResult = PaginatedVariant | InputError | ServerError
+
+type PaginatedVariant {
+  count: Int!
+  hasNext: Boolean!
+  variants: [Variant!]!
+}
+
+input VariantArgs {
+  page: Int = 1
+  take: Int = 10
+  filter: VariantFilterArgs
+  orderBy: VariantOrderArgs
+}
+
+input VariantFilterArgs {
+  id: Float
+  activated: Boolean
+  search: SearchrArgs
+}
+
+input VariantOrderArgs {
+  id: Sort
+  name: Sort
+  desc: Sort
+  createdAt: Sort
+  updatedAt: Sort
+}
+
+union OptionResult = Option | InputError | ServerError
+
+union PaginatedOptionResult = PaginatedOption | InputError | ServerError
+
+type PaginatedOption {
+  count: Int!
+  hasNext: Boolean!
+  options: [Option!]!
+}
+
+input OptionArgs {
+  page: Int = 1
+  take: Int = 10
+  filter: OptionFilterArgs
+  orderBy: OptionOrderArgs
+}
+
+input OptionFilterArgs {
+  id: Float
+  activated: Boolean
+  search: SearchrArgs
+}
+
+input OptionOrderArgs {
+  id: Sort
+  name: Sort
+  desc: Sort
+  createdAt: Sort
+  updatedAt: Sort
+}
+
+union MenuVariantResult = MenuVariant | InputError | ServerError
+
+union PaginatedMenuVariantResult = PaginatedMenuVariant | InputError | ServerError
+
+type PaginatedMenuVariant {
+  count: Int!
+  hasNext: Boolean!
+  menuVariants: [MenuVariant!]!
+}
+
+input MenuVariantArgs {
+  page: Int = 1
+  take: Int = 10
+  filter: MenuVariantFilterArgs
+  orderBy: MenuVariantOrderArgs
+}
+
+input MenuVariantFilterArgs {
+  id: Float
+  activated: Boolean
+  search: SearchrArgs
+}
+
+input MenuVariantOrderArgs {
+  id: Sort
+  name: Sort
+  desc: Sort
+  createdAt: Sort
+  updatedAt: Sort
+}
+
+union MenuOptionResult = MenuOption | InputError | ServerError
+
+union PaginatedMenuOptionResult = PaginatedMenuOption | InputError | ServerError
+
+type PaginatedMenuOption {
+  count: Int!
+  hasNext: Boolean!
+  menuOptions: [MenuOption!]!
+}
+
+input MenuOptionArgs {
+  page: Int = 1
+  take: Int = 10
+  filter: MenuOptionFilterArgs
+  orderBy: MenuOptionOrderArgs
+}
+
+input MenuOptionFilterArgs {
+  id: Float
+  activated: Boolean
+  search: SearchrArgs
+}
+
+input MenuOptionOrderArgs {
+  id: Sort
+  name: Sort
+  desc: Sort
+  createdAt: Sort
+  updatedAt: Sort
+}
+
 type Mutation {
   saveMenu(menuInput: MenuInput!): MenuResult!
   deleteMenu(id: Int!): MenuResult!
@@ -421,6 +600,14 @@ type Mutation {
   deleteOrder(id: Int!): OrderResult!
   saveOrderItem(cartItemInput: OrderItemInput!): OrderItemResult!
   deleteOrderItem(id: Int!): OrderItemResult!
+  saveVariant(variantInput: VariantInput!): VariantResult!
+  deleteVariant(id: Int!): VariantResult!
+  saveOption(optionInput: OptionInput!): OptionResult!
+  deleteOption(id: Int!): OptionResult!
+  saveMenuVariant(menuVariantInput: MenuVariantInput!): MenuVariantResult!
+  deleteMenuVariant(id: Int!): MenuVariantResult!
+  saveMenuOption(menuOptionInput: MenuOptionInput!): MenuOptionResult!
+  deleteMenuOption(id: Int!): MenuOptionResult!
 }
 
 input MenuInput {
@@ -495,6 +682,35 @@ input OrderItemInput {
   quantity: Float!
   price: Float!
   discount: Float
+}
+
+input VariantInput {
+  id: Float
+  activated: Boolean!
+  name: String!
+  desc: String!
+}
+
+input OptionInput {
+  id: Float
+  activated: Boolean!
+  name: String!
+  desc: String!
+  variantId: Float!
+}
+
+input MenuVariantInput {
+  id: Float
+  activated: Boolean!
+  menuId: Float!
+  variantId: Float!
+}
+
+input MenuOptionInput {
+  id: Float
+  activated: Boolean!
+  menuId: Float!
+  optionId: Float!
 }
 
 scalar link__Import

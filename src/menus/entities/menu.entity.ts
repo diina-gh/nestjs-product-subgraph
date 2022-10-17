@@ -3,6 +3,8 @@ import { CartItem } from 'src/cart-items/entities/cart-item.entity';
 import { Category } from 'src/categories/entities/category.entity';
 import { Discount } from 'src/discounts/entities/discount.entity';
 import { Inventory } from 'src/inventories/entities/inventory.entity';
+import { MenuOption } from 'src/menus-options/entities/menu-option.entity';
+import { MenuVariant } from 'src/menus-variants/entities/menu-variant.entity';
 import { OrderItem } from 'src/order-items/entities/order-item.entity';
 import { BaseModel } from 'src/_bases/entities/base.entity';
 import { InputError } from 'src/_bases/entities/input-error.entity';
@@ -63,6 +65,14 @@ export class Menu extends BaseModel {
   @Field((type) => [OrderItem])
   @OneToMany(() => OrderItem, (orderItems) => orderItems.menu)
   orderItems: OrderItem[];
+
+  @Field((type) => [MenuVariant])
+  @OneToMany(() => MenuVariant, (menusVariants) => menusVariants.menu)
+  menusVariants: MenuVariant[];
+
+  @Field((type) => [MenuOption])
+  @OneToMany(() => MenuOption, (menusOptions) => menusOptions.menu)
+  menusOptions: MenuOption[];
 
 
 }
