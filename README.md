@@ -1,4 +1,4 @@
-#nestjs-product-subgraph
+# nestjs-product-subgraph
 
 An Appollo Federation subgraph built on top of Nestjs allowing us to split monolithic GraphQL server into independent microservices. This codebase represents the product microservice. Other graphql subgraphs and a gateway that compose this supergraph are available in my profile.
 
